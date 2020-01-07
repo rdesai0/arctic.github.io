@@ -1,0 +1,368 @@
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+	<title>Make a Reservation</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+	<link rel="stylesheet" href="assets/css/main.css" />
+         <link rel="shortcut icon" type="image/x-icon" href="images/redlogo.png"/>
+   
+	<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+
+	<script type="text/javascript" src="assets/js/jquery.min.js"></script>
+	
+<script>
+	var datere = /^\d\d\d\d-\d\d-\d\d$/;
+	var timere = /^\d\d:\d\d$/;
+	var notwhitespace = /^\S+$/;
+
+	function checkProducts() {
+		return Array.prototype.slice.call(document.getElementsByName('product')).filter(function(obj) {
+			return obj.checked;
+		}).length == 1;
+	}
+
+	function checkTime(time, min, max) {
+		var [h,m] = time.split(':').map((i) => {return parseInt(i)});
+		var t = 60*h + m;
+		var [minh,minm] = min.split(':').map((i) => {return parseInt(i)});
+		var [maxh,maxm] = time.split(':').map((i) => {return parseInt(i)});
+		return (t >= 60 * minh + minm && t <= 60 * maxh + maxm);
+	}
+
+	function validate_form(){
+		var groupname = document.getElementsByName('groupname')[0].value;
+		var date = document.getElementsByName('date')[0].value;
+		var time = document.getElementsByName('time')[0].value;
+		var phone = document.getElementById('phone').value;
+		var guests = document.getElementsByName('guest')[0].value;
+
+		var msg = 0;
+
+		if (!notwhitespace.test(groupname))
+			msg = "Please input a group name.";
+		else if (!checkProducts())
+			msg = "Please select one product."; 
+		else if (!notwhitespace.test(phone))
+			msg = "Please input a phone number.";
+		else if (!(guests > 0))
+			msg = "Please input a valid number of guests."
+		else if (!datere.test(date))
+			msg = "Please input a valid date.";
+		else if (!timere.test(time) || !checkTime(time, "09:00", "22:00"))
+			msg = "Please input a time between 9:00 AM and 10:00 PM.";
+
+		return msg;
+	}
+	$(document).ready(function() {
+		$("#form1").on("change", ":input", function() {
+			$("#invalid").css({
+				display: "none"
+			});
+		});
+		$(function() {
+			$("#submitter").click(function() {
+				var test = validate_form();
+				if (test === 0)
+					$("#formsection").html("<h3>Thanks for submitting!</h3><a href='index.html' style='margin-top:10px' class='button'>Return Home</div>");
+				else
+					$("#invalid").css({
+						display: "inline-block"
+					}).html(test);
+			});
+		});
+	});
+	
+	</script>
+
+</head>
+
+<body class="homepage">
+	<div id="page-wrapper">
+		<!-- Header -->
+		<div id="header-wrapper">
+			<div id="header">
+				<!-- Logo -->
+				<h1><a href="index.html">Arctic Sporting Goods</a></h1>
+				<!-- Nav -->
+				<nav id="nav">
+					<ul>
+						<li ><a href="index.html">Home</a></li>
+						<li><a href="left-sidebar.html">About Us</a></li>
+						<li><a href="right-sidebar.html">Services</a></li>
+						<li><a href="no-sidebar.html">Packages</a></li>
+                        <li class="current"><a href="res01.html">Shopping Cart</a></li>
+						<li><a href="contact-page1.html">Contact Us</a></li>
+						
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<!-- Main -->
+		<div id="main-wrapper">
+			<div class="container">
+				<div class="row">
+					<div class="12u 12u(mobile)">
+						<!-- Content -->
+						<article class="box post">
+							
+							<header>
+								<h2>Make a Reservation</h2>
+								<p>For cash and check payments, skip the bottom checkout information.</p>
+							</header>
+							<section id="formsection">
+								<form id="form1">
+									<label>First Name of Party Leader:</label>
+									<input type="text" name="groupname">
+                                    <!--Package
+									<label>Package Name (Owl, Wolf, or Bear):</label>
+									<input type="text" name="contactname">
+                                    -->
+                                    <div class="lol">
+	<form>
+       <fieldset>
+          
+          <p>
+             <label><br><b>Sport:</b></label>
+              
+             <select id = "myList">
+               <option value = "1">Basketball</option>
+               <option value = "2">Soccer</option>
+               <option value = "3">Tennis</option>
+               <option value = "4">Cricket</option>
+                <option value = "5">Field/Ice Hockey</option>
+               <option value = "6">Flag Football</option>
+               <option value = "7">Baseball</option>
+             </select>
+          </p>
+       </fieldset>
+    </form>
+	<label>Package Choice:</label>
+
+  <input type="radio" name="product"> Owl &nbsp;($15.00 per hour + $20.00 Shipping)<br>
+  <input type="radio" name="product"> Wolf &nbsp;($45.00 per hour + $20.00 Shipping)<br>
+  <input type="radio" name="product"> Bear &nbsp;($95.00 per hour + $20.00 Shipping)<br>
+
+</div>
+
+<div class="signature">
+</div>
+                                    <label><br><b>Phone Number: </b><br></label>
+									<input id="phone" type="tel" name="tel" maxlength=10>
+                                    
+                            
+    
+                                    
+                                    <label><br><br><b>Number of Guests:</b><br></label>
+									<input type="Number" name="guest" min="1"/><br>
+                                    
+                                    <label><br><b>Date:</b><br></label>
+                                    <input name="date" type="date" min="2020-01-01"/><br> 
+                                    
+                                    <label><br><b>Number of Hours:</b><br></label>
+									<input type="Number" name="hours" min="1"/><br>
+                                    
+                                    	<label><br><b>Time (9AM - 10PM):<br></b></label>
+									<input name="time" type="time" min="09--00--AM" max="10--00--PM"/><br>
+                                    
+                                    
+
+  <br>   
+                                    <br>
+<div class="row">
+  <div class="col-75">
+    <div class="container">
+      <form action="/action_page.php">
+
+        <div class="row">
+          <div class="col-50">
+            <h3>Billing Address</h3>
+            <label for="fname"><i class="fa fa-user"></i> Full Name</label>
+            <input type="text" id="fname" name="firstname" placeholder="John M. Doe">
+            <label for="email"><i class="fa fa-envelope"></i> Email</label>
+            <input type="text" id="email" name="email" placeholder="john@example.com">
+            <label for="adr"><i class="fa fa-address-card-o"></i> Address</label>
+            <input type="text" id="adr" name="address" placeholder="542 W. 15th Street">
+            <label for="city"><i class="fa fa-institution"></i> City</label>
+            <input type="text" id="city" name="city" placeholder="New York">
+
+            <div class="row">
+              <div class="col-50">
+                <label for="state">State</label>
+                <input type="text" id="state" name="state" placeholder="NY">
+              </div>
+              <div class="col-50">
+                <label for="zip">Zip</label>
+                <input type="text" id="zip" name="zip" placeholder="10001">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-50">
+            <h3>Payment</h3>
+            <label for="fname">Accepted Cards</label>
+            <div class="icon-container">
+              <i class="fa fa-cc-visa" style="color:navy;"></i>
+              <i class="fa fa-cc-amex" style="color:blue;"></i>
+              <i class="fa fa-cc-mastercard" style="color:red;"></i>
+              <i class="fa fa-cc-discover" style="color:orange;"></i>
+            </div>
+            <label for="cname">Name on Card</label>
+            <input type="text" id="cname" name="cardname" placeholder="John More Doe">
+            <label for="ccnum">Credit card number</label>
+            <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444">
+            <label for="expmonth">Exp Month</label>
+            <input type="text" id="expmonth" name="expmonth" placeholder="September">
+
+            <div class="row">
+              <div class="col-50">
+                <label for="expyear">Exp Year</label>
+                <input type="text" id="expyear" name="expyear" placeholder="2018">
+              </div>
+              <div class="col-50">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" name="cvv" placeholder="352">
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <label>
+          <input type="checkbox" checked="checked" name="sameadr"> Shipping address same as billing
+        </label>
+        
+      </form>
+    </div>
+  </div>
+
+  
+</div>
+
+                                    <!--
+                                    <p><br><b>Date:</b></p>
+                                     <section class="container">
+  
+
+
+
+                
+                                       <table id="tabledude" border="3" cellspacing="3" cellpadding="3"> 
+<tr>
+<td colspan="7" align="center" class="td"><b>May 2017</b></td> 
+</tr>
+<tr> 
+<td colspan="7" align="center" class="td"><i>Please note that we cannot take any reservations on days marked red due to no availabilty.<br> Bookings can only be made within the same month.</i></td>
+</tr>
+<tr> 
+<td  ALIGN="center" class="td"><strong>Sun</strong></td>
+<td  ALIGN="center" class="td"><strong>Mon</strong></td>
+<td ALIGN="center" class="td"><strong>Tue</strong></td>
+<td  ALIGN="center" class="td"><strong>Wed</strong></td>
+<td  ALIGN="center" class="td"><strong>Thu</strong></td>
+<td  ALIGN="center" class="td"><strong>Fri</strong></td>
+<td  ALIGN="center" class="td" ><strong>Sat</strong></td>
+</tr>
+<tr> 
+<td  ALIGN="center" class="td"></td>
+<td class="tablehover" id="tr" ALIGN="center"><p id="bb" type="button" onclick="document.getElementById('bb').style.color='red'">1</p></td>
+<td  ALIGN="center" class="td"><mark>2</mark></td>
+<td ALIGN="center" class="tablehover td"  ><p id="bb1" type="button" onclick="document.getElementById('bb1').style.color='red'">3</p></td>
+<td class="tablehover td" ALIGN="center">4</td>
+<td class="tablehover td" ALIGN="center">5</td>
+<td  ALIGN="center" class="td"><mark>6</mark></td>
+</tr>
+<tr> 
+<td ALIGN="center" class="td"><mark>7</mark></td>
+<td class="tablehover td" ALIGN="center">8</td>
+<td class="tablehover td" ALIGN="center">9</td>
+<td ALIGN="center" class="td"><mark>10</mark></td>
+<td class="tablehover td" ALIGN="center">11</td>
+<td  ALIGN="center" class="td"><mark>12</mark></td>
+<td class="tablehover td" ALIGN="center">13</td>
+</tr>
+<tr> 
+<td class="tablehover td" ALIGN="center">14</td>
+<td class="tablehover td" ALIGN="center">15</td>
+<td class="tablehover td" ALIGN="center">16</td>
+<td class="tablehover td" ALIGN="center">17</td>
+<td class="tablehover td" ALIGN="center">18</td>
+<td class="tablehover td" ALIGN="center">19</td>
+<td  ALIGN="center" class="td"><mark>20</mark></td>
+</tr>
+<tr> 
+<td class="tablehover td" ALIGN="center">21</td>
+<td class="tablehover td" ALIGN="center">22</td>
+<td class="tablehover td" ALIGN="center">23</td>
+<td class="tablehover td" ALIGN="center">24</td>
+<td class="tablehover td" ALIGN="center">25</td>
+<td class="tablehover td" ALIGN="center">26</td>
+<td  ALIGN="center" class="td"><mark>27</mark></td>
+</tr>
+<tr> 
+<td class="tablehover td" ALIGN="center">28</td>
+<td class="tablehover td" ALIGN="center">29</td>
+<td class="tablehover td" ALIGN="center">30</td>
+<td class="tablehover td" ALIGN="center">31</td>
+<td  ALIGN="center" class="td"></td>
+<td  ALIGN="center" class="td"></td>
+<td  ALIGN="center" class="td"></td>
+
+</tr>
+</table>
+
+
+									
+   -->                                 
+
+									
+                                 
+								
+                                
+                                    
+									<div id="submitter" style="margin-top:10px" class="button">Checkout</div>
+									<div id="invalid" style="color:red; display: none; margin-left: 10px; font-weight: bold;">Form Invalid. Please check your input.</div>
+                                    
+								
+						
+                            </form>
+                            </section>
+						</article>
+                        
+					</div>
+                    
+				</div>
+			</div>
+		</div>
+		<!-- Footer -->
+		<div id="footer-wrapper">
+			<section id="footer" class="container">
+				
+			
+				<div class="row">
+					<div class="12u">
+						<!-- Copyright -->
+						<div id="copyright">
+							<ul class="links">
+								<li>&copy; Arctic Sporting Goods. All rights reserved.</li>
+								
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/skel.min.js"></script>
+	<script src="assets/js/skel-viewport.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
+	<script src="assets/js/main.js"></script>
+</body>
+
+</html>
